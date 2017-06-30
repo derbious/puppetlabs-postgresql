@@ -134,34 +134,6 @@ describe 'postgresql::server::config', :type => :class do
     end
   end
 
-  describe 'with managed pg_hba_conf' do
-    let (:pre_condition) do
-      <<-EOS
-        class { 'postgresql::globals':
-          version => '9.5',
-        }->
-        class { 'postgresql::server':
-          manage_pg_hba_conf => true,
-        }
-      EOS
-    end
-    let :facts do
-      {
-        :osfamily => 'RedHat',
-        :operatingsystem => 'CentOS',
-        :operatingsystemrelease => '7.0',
-        :concat_basedir => tmpfilename('server'),
-        :kernel => 'Linux',
-        :id => 'root',
-        :path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
-        :selinux => true,
-      }
-    end
-    it 'should have hba default' do
-      is_expected.to contain_postgresql__server__pg_hba_rule('local access as postgres user')
-    end
-  end
-
   describe 'with managed pg_hba_conf and ipv4acls' do
     let (:pre_condition) do
       <<-EOS
